@@ -21,6 +21,8 @@ void GameStateManager::loadContent(){
 	this->addState(y);
 	std::shared_ptr<GameState> z = std::shared_ptr<GameState>(new MenuState(this));
 	this->addState(z);
+	std::shared_ptr<GameState> o = std::shared_ptr<GameState>(new OnlineState(this));
+	this->addState(o);
 
 	std::string directory = "data/Pics/";
 	HANDLE dir;
@@ -42,7 +44,6 @@ void GameStateManager::loadContent(){
 		
 	} while (FindNextFile(dir, &file_data));
 	FindClose(dir);
-	
 }
 void GameStateManager::exit(){
 	this->running = false;

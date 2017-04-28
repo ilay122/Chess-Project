@@ -48,6 +48,7 @@ void MenuState::update(sf::Time elapsed){
 					break;
 				}
 				case 2:{
+					gsm->setState(GameStatesIndex::onlinegame);
 					break;
 				}
 				case 3:{
