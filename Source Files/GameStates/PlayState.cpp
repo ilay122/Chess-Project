@@ -35,11 +35,11 @@ void PlayState::update(sf::Time elapsed){
 		}
 		if (isblackturn){
 			text.setString("Current Turn : Black");
-			text.setColor(sf::Color::Black);
+			text.setFillColor(sf::Color::Black);
 		}
 		else{
 			text.setString("Current Turn : White");
-			text.setColor(sf::Color::White);
+			text.setFillColor(sf::Color::White);
 		}
 		if (board->isCheck){
 			text.setString(text.getString() + "\nCheck Right Now");
@@ -47,7 +47,7 @@ void PlayState::update(sf::Time elapsed){
 		if (!clickedlasttime && nowclicking){
 			mousepos -= board->getBoardPosRelative();
 			mousepos = mousepos / board->getBoardTileWidth();
-
+			
 			std::cout << mousepos.x << "    " << mousepos.y << std::endl;
 			if (mousepos.x >= 0 && mousepos.x <= 7 && mousepos.y >= 0 && mousepos.y <= 7){
 				holdin = board->getPieceAt(mousepos.y, mousepos.x);
@@ -102,11 +102,11 @@ void PlayState::update(sf::Time elapsed){
 		bool blackwon = !board->isBlackTurn();
 		if (blackwon){
 			text.setString("Game Over\nBlack Wins");
-			text.setColor(sf::Color::Black);
+			text.setFillColor(sf::Color::Black);
 		}
 		else{
 			text.setString("Game Over\nWhite Wins");
-			text.setColor(sf::Color::White);
+			text.setFillColor(sf::Color::White);
 		}
 
 		restart.setPosition(text.getPosition().x, text.getPosition().y + 100);

@@ -29,6 +29,7 @@ PlayAIState::PlayAIState(GameStateManager* gsm) : GameState(gsm)
 	chosenrect.setOutlineColor(sf::Color::White);
 	chosenrect.setOutlineThickness(10);
 	
+	backtomainmenu.setFont(gsm->getFontByName("noodle"));
 
 	start.setFont(gsm->getFontByName("noodle"));
 	start.setString("Start Game");
@@ -37,7 +38,7 @@ PlayAIState::PlayAIState(GameStateManager* gsm) : GameState(gsm)
 
 	chosencolor.setString(">");
 	chosencolor.setFont(gsm->getFontByName("noodle"));
-	chosencolor.setColor(sf::Color::Red);
+	chosencolor.setFillColor(sf::Color::Red);
 	chosencolor.setCharacterSize(40);
 	chosencolor.setPosition(120, 100);
 
@@ -80,6 +81,22 @@ void PlayAIState::update(sf::Time elapsed){
 
 	
 	if (this->st == currentState::choosing){
+		backtomainmenu.setString("To The\nMain Menu");
+		backtomainmenu.setPosition(0, 0);
+
+		if (backtomainmenu.getGlobalBounds().contains(mousepos.x, mousepos.y)) {
+			backtomainmenu.setStyle(sf::Text::Bold | sf::Text::Underlined);
+			if (nowclicking && !clickedlasttime) {
+				board->initilizeDefaultBoard();
+				this->st = currentState::choosing;
+				gsm->setState(GameStatesIndex::mainmenu);
+				return;
+			}
+		}
+		else {
+			backtomainmenu.setStyle(sf::Text::Regular);
+		}
+
 		for (int i = 0; i < sizeof(difficultes) / sizeof(difficultes[0]); i++){
 			if (difficultes[i].getGlobalBounds().contains(mousepos.x,mousepos.y) && nowclicking && !clickedlasttime){
 				chosen = i;
@@ -125,11 +142,11 @@ void PlayAIState::update(sf::Time elapsed){
 		}
 		if (isblackturn){
 			text.setString("Current Turn : Black");
-			text.setColor(sf::Color::Black);
+			text.setFillColor(sf::Color::Black);
 		}
 		else{
 			text.setString("Current Turn : White");
-			text.setColor(sf::Color::White);
+			text.setFillColor(sf::Color::White);
 		}
 		if (board->isCheck){
 			text.setString(text.getString() + "\nCheck Right Now");
@@ -146,10 +163,14 @@ void PlayAIState::update(sf::Time elapsed){
 				if (!AIManager::started){
 					if (aicolor == BLACK){
 						std::thread th(AIManager::bestMoveForBlack, new GameBoard(gsm,board.get()), diffchosen);
+						SetThreadPriority(th.native_handle(), REALTIME_PRIORITY_CLASS);
+						SetPriorityClass(th.native_handle(), REALTIME_PRIORITY_CLASS);
 						th.detach();//{remove duplication};
 					}
 					else{
 						std::thread th(AIManager::bestMoveForWhite, new GameBoard(gsm, board.get()), diffchosen);
+						SetThreadPriority(th.native_handle(), REALTIME_PRIORITY_CLASS);
+						SetPriorityClass(th.native_handle(), REALTIME_PRIORITY_CLASS);
 						th.detach();
 					}
 
@@ -214,11 +235,11 @@ void PlayAIState::update(sf::Time elapsed){
 		bool blackwon = !board->isBlackTurn();
 		if (blackwon){
 			text.setString("Game Over\nBlack Wins");
-			text.setColor(sf::Color::Black);
+			text.setFillColor(sf::Color::Black);
 		}
 		else{
 			text.setString("Game Over\nWhite Wins");
-			text.setColor(sf::Color::White);
+			text.setFillColor(sf::Color::White);
 		}
 		difficultes[0].setPosition(text.getPosition().x,text.getPosition().y+100);
 		difficultes[0].setString("Click On Me\nTo Start Restart\nThe Game");
@@ -259,6 +280,8 @@ void PlayAIState::draw(){
 	if (this->st == currentState::choosing){
 		gsm->window->draw(blackrect);
 		gsm->window->draw(whiterect);
+
+		gsm->window->draw(backtomainmenu);
 
 		gsm->window->draw(chosenrect);
 		for (int i = 0; i < sizeof(difficultes) / sizeof(difficultes[0]); i++){

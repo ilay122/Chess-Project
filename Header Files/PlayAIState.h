@@ -35,6 +35,7 @@ private:
 	bool playercolorchosen;
 	sf::Text chosencolor;
 
+	sf::Text backtomainmenu;
 	sf::Text text;
 	sf::Text start;
 

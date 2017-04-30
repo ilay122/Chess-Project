@@ -6,7 +6,6 @@
 
 int main()
 {
-
 	srand(time(NULL));
 	sf::RenderWindow* window=new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Chess");
 	GameStateManager gsm(window);

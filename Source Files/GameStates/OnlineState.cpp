@@ -47,6 +47,24 @@ void OnlineState::update(sf::Time elapsed){
 		acceptenter.setPosition(sf::Vector2f((800 - acceptenter.getLocalBounds().width) / 2, 400));
 		acceptenter.move(0, 40);
 
+		backtomainmenu.setString("To The\nMain Menu");
+		backtomainmenu.setPosition(0, 0);
+
+		if (backtomainmenu.getGlobalBounds().contains(mousepos.x, mousepos.y)) {
+			backtomainmenu.setStyle(sf::Text::Bold | sf::Text::Underlined);
+			if (nowclicking && !clickedlasttime) {
+				board->initilizeDefaultBoard();
+				enemyleft = false;
+				this->st = currentStateOnline::enteringIP;
+				sock.disconnect();
+				gsm->setState(GameStatesIndex::mainmenu);
+				return;
+			}
+		}
+		else {
+			backtomainmenu.setStyle(sf::Text::Regular);
+		}
+
 		if (acceptenter.getGlobalBounds().contains(mousepos.x, mousepos.y)){
 			acceptenter.setStyle(sf::Text::Bold | sf::Text::Underlined);
 			if (nowclicking && !clickedlasttime){
@@ -167,11 +185,11 @@ void OnlineState::update(sf::Time elapsed){
 				std::string colorthing="Your Color:\n";
 				if (mycolor){
 					colorthing += "Black";
-					mycoloris.setColor(sf::Color::Black);
+					mycoloris.setFillColor(sf::Color::Black);
 				}
 				else{
 					colorthing += "White";
-					mycoloris.setColor(sf::Color::White);
+					mycoloris.setFillColor(sf::Color::White);
 				}
 				mycoloris.setString(colorthing);
 			}
@@ -235,11 +253,11 @@ void OnlineState::update(sf::Time elapsed){
 		}
 		if (isblackturn){
 			text.setString("Current Turn : Black");
-			text.setColor(sf::Color::Black);
+			text.setFillColor(sf::Color::Black);
 		}
 		else{
 			text.setString("Current Turn : White");
-			text.setColor(sf::Color::White);
+			text.setFillColor(sf::Color::White);
 		}
 		if (board->isCheck){
 			text.setString(text.getString() + "\nCheck Right Now");
@@ -329,11 +347,11 @@ void OnlineState::update(sf::Time elapsed){
 			bool blackwon = !board->isBlackTurn();
 			if (blackwon){
 				text.setString("Game Over\nBlack Wins");
-				text.setColor(sf::Color::Black);
+				text.setFillColor(sf::Color::Black);
 			}
 			else{
 				text.setString("Game Over\nWhite Wins");
-				text.setColor(sf::Color::White);
+				text.setFillColor(sf::Color::White);
 			}
 		}
 		break;
@@ -353,6 +371,7 @@ void OnlineState::draw(){
 		gsm->window->draw(text);
 		gsm->window->draw(acceptenter);
 		gsm->window->draw(textstuff);
+		gsm->window->draw(backtomainmenu);
 		break;
 	}
 	case currentStateOnline::queue:{
