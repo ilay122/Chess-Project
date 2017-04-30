@@ -1,6 +1,6 @@
 # Chess C++
-Chess Game written in C++ using principles of OOP and polymorphism
-
+Chess Game written in C++ using principles of OOP and polymorphism.
+Using SFML 2.4.2
 
 TODO LIST:
 - [ ] UI Changes
@@ -8,4 +8,4 @@ TODO LIST:
 
 # Online
 The chess server listens on port 42069. Port fowarding is required for people outside of your lan.
-The server is written in python 2.7 and does not require any additional libraries.
+The server is written in python 2.7 and does not require any additional libraries. Simpy run
