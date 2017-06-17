@@ -199,15 +199,16 @@ void PlayAIState::update(sf::Time elapsed){
 							shoulddrawwithout = true;
 							wowhat = sf::Vector2i(mousepos.x, mousepos.y);
 							movesavil = holdin->allPossibleMoves(board.get());
-							/*
+							std::auto_ptr<GameBoard>copyboard(new GameBoard(gsm,board.get()));
+
 							for (int i = movesavil->size()-1; i >= 0; i--){
-								board->doMove(movesavil->at(i));
-								if (board->isCheckRightNow(!aicolor)){
+								copyboard->doMove(movesavil->at(i));
+								if (copyboard->isCheckRightNow(isblackturn)){
 									movesavil->erase(movesavil->begin() + i);
 								}
-								board->popTurn();
+								copyboard->popTurn();
 							}
-							*/
+							
 						}
 					}
 				}

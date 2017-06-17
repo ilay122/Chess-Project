@@ -60,6 +60,16 @@ void PlayState::update(sf::Time elapsed){
 						wowhat = sf::Vector2i(mousepos.x, mousepos.y);
 						movesavil = holdin->allPossibleMoves(board.get());
 
+						std::auto_ptr<GameBoard>copyboard(new GameBoard(gsm, board.get()));
+
+						for (int i = movesavil->size() - 1; i >= 0; i--) {
+							copyboard->doMove(movesavil->at(i));
+							if (copyboard->isCheckRightNow(isblackturn)) {
+								movesavil->erase(movesavil->begin() + i);
+							}
+							copyboard->popTurn();
+						}
+
 					}
 				}
 			}
